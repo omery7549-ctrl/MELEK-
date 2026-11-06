@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Melek AI 🌸</title>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#fdf2f8">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { -webkit-tap-highlight-color: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-pink-50 via-rose-50 to-pink-100 min-h-screen font-sans text-slate-800 pb-16">
+
+  <!-- SABİT ÜST BAŞLIK -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-400 flex items-center justify-center text-white shadow-md shadow-pink-200">
+          <i class="fa-solid fa-graduation-cap text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base text-pink-900 leading-tight">Melek AI 🌸</h1>
+          <p class="text-[11px] font-semibold text-pink-600">Tarsus Üni • Çocuk Gelişimi</p>
+        </div>
+      </div>
+      
+      <div class="bg-gradient-to-r from-pink-100 to-rose-100 px-3 py-1.5 rounded-full border border-pink-200 flex items-center gap-1.5 shadow-sm">
+        <i class="fa-solid fa-bullseye text-pink-600 text-xs"></i>
+        <span class="text-xs font-bold text-pink-800">Hedef: 55 Net</span>
+      </div>
+    </div>
+
+    <!-- ASLA KAYBOLMAYAN ÜST MENÜ SEKMELERİ -->
+    <div class="max-w-md mx-auto px-3 pb-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <button onclick="switchTab('scan')" id="tab-btn-scan" class="flex-1 min-w-[85px] py-2 px-2.5 rounded-2xl font-bold text-xs bg-pink-500 text-white shadow-sm flex items-center justify-center gap-1.5 transition">
+        <i class="fa-solid fa-camera"></i>
+        <span>Soru Çöz</span>
+      </button>
+      <button onclick="switchTab('plan')" id="tab-btn-plan" class="flex-1 min-w-[85px] py-2 px-2.5 rounded-2xl font-bold text-xs bg-white text-slate-600 border border-pink-200 flex items-center justify-center gap-1.5 transition">
+        <i class="fa-solid fa-calendar
