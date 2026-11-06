@@ -2,49 +2,448 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Melek AI 🌸</title>
-  
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="theme-color" content="#fdf2f8">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
-    body { -webkit-tap-highlight-color: transparent; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #fdf2f8; color: #334155; padding-bottom: 50px; }
+    .container { max-width: 480px; margin: 0 auto; padding: 12px; }
+    
+    /* Header */
+    header { background: #fff; padding: 14px 16px; border-radius: 20px; box-shadow: 0 4px 15px rgba(244, 114, 182, 0.15); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .title-area h1 { font-size: 17px; color: #831843; font-weight: 800; }
+    .title-area p { font-size: 11px; color: #db2777; font-weight: 600; }
+    .target-pill { background: #fce7f3; color: #9d174d; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid #fbcfe8; }
+
+    /* Sekme Menüsü */
+    .nav-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; background: #fff; padding: 6px; border-radius: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .tab-btn { border: none; background: transparent; padding: 10px 4px; border-radius: 14px; font-size: 11px; font-weight: 700; color: #64748b; cursor: pointer; transition: 0.2s; text-align: center; }
+    .tab-btn.active { background: #ec4899; color: #fff; box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3); }
+
+    /* Kartlar */
+    .card { background: #fff; border-radius: 22px; padding: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #fce7f3; margin-bottom: 14px; }
+    
+    /* API Alanı */
+    .api-box { background: #fff; border: 1px dashed #f472b6; border-radius: 16px; padding: 12px; margin-bottom: 14px; }
+    .api-box label { display: block; font-size: 11px; font-weight: 700; color: #9d174d; margin-bottom: 6px; }
+    .input-row { display: flex; gap: 8px; }
+    .input-row input { flex: 1; padding: 8px 10px; border-radius: 10px; border: 1px solid #fbcfe8; font-size: 11px; outline: none; }
+    .btn-save { background: #db2777; color: #fff; border: none; border-radius: 10px; padding: 8px 14px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+    /* Butonlar */
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+    .upload-btn { background: #ec4899; color: #fff; padding: 12px; border-radius: 14px; text-align: center; font-size: 12px; font-weight: 700; display: block; cursor: pointer; }
+    .upload-btn.alt { background: #fce7f3; color: #be185d; }
+    .btn-solve { width: 100%; background: #1e293b; color: #fff; border: none; padding: 12px; border-radius: 14px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+    
+    /* Çözüm Alanı */
+    .solution-card { background: #fff; border: 2px solid #fbcfe8; border-radius: 20px; padding: 14px; margin-top: 14px; }
+    .solution-card h3 { font-size: 13px; color: #831843; font-weight: 800; margin-bottom: 8px; border-bottom: 1px solid #fdf2f8; padding-bottom: 6px; }
+    .solution-text { font-size: 12px; line-height: 1.6; color: #334155; }
+
+    /* Net Hesaplama */
+    .net-hero { background: linear-gradient(135deg, #ec4899, #e11d48); color: #fff; padding: 18px; border-radius: 20px; margin-bottom: 12px; }
+    .net-hero h2 { font-size: 32px; font-weight: 900; margin: 4px 0; }
+    .row-subject { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #fdf2f8; font-size: 12px; }
+    .row-subject input { width: 44px; padding: 6px; border-radius: 8px; border: 1px solid #cbd5e1; text-align: center; font-weight: 700; font-size: 12px; }
+    
+    /* Planım */
+    .week-nav { display: flex; gap: 6px; margin-bottom: 12px; }
+    .w-btn { flex: 1; padding: 8px; border-radius: 12px; border: 1px solid #fbcfe8; background: #fff; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer; }
+    .w-btn.active { background: #db2777; color: #fff; border-color: #db2777; }
+    .day-item { background: #fff; border-radius: 14px; padding: 12px; margin-bottom: 8px; border-left: 4px solid #ec4899; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .day-title { font-weight: 800; font-size: 11px; color: #be185d; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .day-sub { font-size: 11px; color: #1e293b; margin-bottom: 2px; }
+    .day-target { font-size: 10px; color: #db2777; background: #fdf2f8; padding: 4px 8px; border-radius: 6px; margin-top: 4px; font-weight: 600; }
+    .badge-ders { background: #ffe4e6; color: #e11d48; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
+
+    /* Sayaç */
+    .timer-circle { width: 170px; height: 170px; border-radius: 50%; border: 6px solid #fce7f3; margin: 20px auto; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; }
+    .timer-time { font-size: 40px; font-weight: 900; color: #1e293b; }
+    .timer-btns { display: flex; justify-content: center; gap: 10px; }
+    .btn-act { padding: 10px 24px; border-radius: 12px; border: none; font-weight: 700; font-size: 12px; cursor: pointer; }
+
+    .hidden { display: none !important; }
   </style>
 </head>
-<body class="bg-gradient-to-b from-pink-50 via-rose-50 to-pink-100 min-h-screen font-sans text-slate-800 pb-16">
+<body>
 
-  <!-- SABİT ÜST BAŞLIK -->
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm">
-    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-400 flex items-center justify-center text-white shadow-md shadow-pink-200">
-          <i class="fa-solid fa-graduation-cap text-lg"></i>
-        </div>
-        <div>
-          <h1 class="font-bold text-base text-pink-900 leading-tight">Melek AI 🌸</h1>
-          <p class="text-[11px] font-semibold text-pink-600">Tarsus Üni • Çocuk Gelişimi</p>
+  <div class="container">
+
+    <!-- Üst Başlık -->
+    <header>
+      <div class="title-area">
+        <h1>Melek AI 🌸</h1>
+        <p>Tarsus Üni • Çocuk Gelişimi</p>
+      </div>
+      <div class="target-pill">🎯 Hedef: 55 Net</div>
+    </header>
+
+    <!-- 4 Sekme Butonu -->
+    <div class="nav-bar">
+      <button onclick="tab('scan')" id="tab-scan-btn" class="tab-btn active">📸 Soru Çöz</button>
+      <button onclick="tab('plan')" id="tab-plan-btn" class="tab-btn">📅 Planım</button>
+      <button onclick="tab('net')" id="tab-net-btn" class="tab-btn">📊 Net Hesap</button>
+      <button onclick="tab('timer')" id="tab-timer-btn" class="tab-btn">⏱️ Odak</button>
+    </div>
+
+    <!-- 1. SEKME: SORU ÇÖZÜCÜ -->
+    <div id="view-scan">
+      
+      <!-- API Kutusu -->
+      <div class="api-box">
+        <label>🔑 Gemini API Anahtarı (<span id="keyLabel" style="color:#059669;">Kontrol Ediliyor</span>):</label>
+        <div class="input-row">
+          <input type="password" id="apiKeyInp" placeholder="AIzaSy... anahtarını yapıştır">
+          <button onclick="saveKey()" class="btn-save">Kaydet</button>
         </div>
       </div>
+
+      <div class="card" style="text-align: center;">
+        <div id="previewBox" class="hidden" style="margin-bottom:10px;">
+          <img id="imgPrev" src="" style="max-width:100%; max-height:220px; border-radius:12px;">
+        </div>
+
+        <p style="font-size:12px; color:#64748b; margin-bottom:8px;">Sorunun fotoğrafını çek veya galeriden yükle:</p>
+
+        <div class="btn-row">
+          <label class="upload-btn">
+            📷 Kamerayı Aç
+            <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="readImg(event)">
+          </label>
+          <label class="upload-btn alt">
+            🖼️ Galeriden Seç
+            <input type="file" accept="image/*" style="display:none;" onchange="readImg(event)">
+          </label>
+        </div>
+
+        <textarea id="textInp" rows="2" placeholder="Veya soruyu buraya yaz..." style="width:100%; border:1px solid #fbcfe8; border-radius:10px; padding:8px; font-size:11px; outline:none; resize:none;"></textarea>
+        
+        <button onclick="solve()" class="btn-solve">✨ Soruyu Yapay Zekaya Çözdür</button>
+      </div>
+
+      <!-- Çözüm Kutusu -->
+      <div id="solBox" class="solution-card hidden">
+        <h3 id="solTitle">✨ Yapay Zeka Çözümü</h3>
+        <div id="solLoading" class="hidden" style="text-align:center; padding:20px; color:#db2777; font-weight:700; font-size:12px;">
+          ⏳ Çözüm hazırlanıyor, lütfen bekle...
+        </div>
+        <div id="solContent" class="solution-text"></div>
+      </div>
+
+    </div>
+
+    <!-- 2. SEKME: ÇALIŞMA PROGRAMI -->
+    <div id="view-plan" class="hidden">
       
-      <div class="bg-gradient-to-r from-pink-100 to-rose-100 px-3 py-1.5 rounded-full border border-pink-200 flex items-center gap-1.5 shadow-sm">
-        <i class="fa-solid fa-bullseye text-pink-600 text-xs"></i>
-        <span class="text-xs font-bold text-pink-800">Hedef: 55 Net</span>
+      <div class="week-nav">
+        <button onclick="showW(1)" id="wb-1" class="w-btn active">1. Hafta</button>
+        <button onclick="showW(2)" id="wb-2" class="w-btn">2. Hafta</button>
+        <button onclick="showW(3)" id="wb-3" class="w-btn">3. Hafta</button>
+        <button onclick="showW(4)" id="wb-4" class="w-btn">4. Hafta</button>
+      </div>
+
+      <!-- Hafta 1 -->
+      <div id="w-content-1">
+        <div class="day-item"><div class="day-title">04.11 Çarşamba</div><div class="day-sub">• Türkçe: Birleşik Kelimelerin Yazılışı</div><div class="day-sub">• Matematik: Sayı Kümeleri (Doğal, Tam, Rasyonel)</div><div class="day-target">🎯 30 Paragraf + Yazım Kuralları [Konu+20S] + Temel Kavramlar</div></div>
+        <div class="day-item"><div class="day-title">05.11 Perşembe <span class="badge-ders">Dershane</span></div><div class="day-sub">• Türkçe: Paragraf Rutini</div><div class="day-sub">• Tarih: Orta Çağ'da Dünya</div><div class="day-target">🎯 30 Paragraf + Tarih Metin [Konu+15S] + Dershane Etüt</div></div>
+        <div class="day-item"><div class="day-title">06.11 Cuma</div><div class="day-sub">• Matematik: Sayı Kümeleri ve Tek-Çift Sayılar</div><div class="day-sub">• Coğrafya: Doğa ve İnsan / Harita Bilgisi</div><div class="day-target">🎯 30 Paragraf + Sayı Kümeleri [40 Soru] + Harita Bilgisi</div></div>
+        <div class="day-item"><div class="day-title">07.11 Cumartesi</div><div class="day-sub">• Matematik: Pozitif-Negatif & Ardışık Sayılar</div><div class="day-sub">• Türkçe: Noktalama İşaretleri Giriş</div><div class="day-target">🎯 30 Paragraf + Mat Tek-Çift [30 Soru] + Noktalama Konu</div></div>
+        <div class="day-item"><div class="day-title">08.11 Pazar</div><div class="day-sub">• Haftalık Genel Tekrar & Dinlenme</div><div class="day-sub">• Tarih: Orta Çağ Soru Çözümü</div><div class="day-target">🎯 30 Paragraf + Tarih [30 Soru] + Yanlış Analizi</div></div>
+      </div>
+
+      <!-- Hafta 2 -->
+      <div id="w-content-2" class="hidden">
+        <div class="day-item"><div class="day-title">09.11 Pazartesi</div><div class="day-sub">• Matematik: Basamak Kavramı / Çözümleme</div><div class="day-sub">• Türkçe: Noktalama İşaretleri</div><div class="day-target">🎯 30 Paragraf + Basamak [Konu+25S] + Noktalama [30S]</div></div>
+        <div class="day-item"><div class="day-title">10.11 Salı <span class="badge-ders">Dershane</span></div><div class="day-sub">• Türkçe: Paragraf Rutini | Felsefe: Felsefeyi Tanıma</div><div class="day-target">🎯 30 Paragraf + Felsefe Giriş [15S] + Ders Takibi</div></div>
+        <div class="day-item"><div class="day-title">11.11 Çarşamba</div><div class="day-sub">• Matematik: Bölme ve Bölünebilme Kuralları</div><div class="day-sub">• Tarih: İlk ve Orta Çağda Türk Dünyası</div><div class="day-target">🎯 30 Paragraf + Bölünebilme [Konu+30S] + Tarih Konu</div></div>
+        <div class="day-item"><div class="day-title">12.11 Perşembe <span class="badge-ders">Dershane</span></div><div class="day-sub">• Türkçe: Paragraf Rutini | Din Kültürü: Bilgi ve İnanç</div><div class="day-target">🎯 30 Paragraf + Din Kültürü Temel Kavramlar [20S]</div></div>
+        <div class="day-item"><div class="day-title">13.11 Cuma</div><div class="day-sub">• Matematik: Asal Çarpanlar ve EBOB-EKOK Giriş</div><div class="day-sub">• Coğrafya: Dünya'nın Şekli ve Hareketleri</div><div class="day-target">🎯 30 Paragraf + EBOB-EKOK [Konu] + Coğrafya [20S]</div></div>
+        <div class="day-item"><div class="day-title">14.11 Cumartesi</div><div class="day-sub">• Matematik: EBOB-EKOK Problem Tipleri</div><div class="day-sub">• Türkçe: Sözcükte Anlam Kavramları</div><div class="day-target">🎯 30 Paragraf + EBOB-EKOK [35S] + Sözcükte Anlam [25S]</div></div>
+        <div class="day-item"><div class="day-title">15.11 Pazar</div><div class="day-sub">• Haftalık Tekrar & Sosyal Denemesi</div><div class="day-target">🎯 30 Paragraf + 1 Adet TYT Sosyal Alan Denemesi + Analiz</div></div>
+      </div>
+
+      <!-- Hafta 3 -->
+      <div id="w-content-3" class="hidden">
+        <div class="day-item"><div class="day-title">16.11 Pazartesi</div><div class="day-sub">• Matematik: Rasyonel Sayılar ve Ondalık Açılım</div><div class="day-sub">• Geometri: Doğruda Açılar (Giriş)</div><div class="day-target">🎯 30 Paragraf + Rasyonel [Konu+30S] + Doğruda Açı</div></div>
+        <div class="day-item"><div class="day-title">17.11 Salı <span class="badge-ders">Dershane</span></div><div class="day-sub">• Türkçe: Paragraf Rutini | Tarih: İslam Medeniyeti</div><div class="day-target">🎯 30 Paragraf + Tarih İslam Medeniyeti [20S]</div></div>
+        <div class="day-item"><div class="day-title">18.11 Çarşamba</div><div class="day-sub">• Matematik: Birinci Dereceden Denklemler</div><div class="day-sub">• Geometri: Doğruda Açılar</div><div class="day-target">🎯 30 Paragraf + Denklemler [25S] + Doğruda Açı [20S]</div></div>
+        <div class="day-item"><div class="day-title">19.11 Perşembe <span class="badge-ders">Dershane</span></div><div class="day-sub">• Türkçe: Cümlede Anlam | Felsefe: Felsefi Düşünce</div><div class="day-target">🎯 30 Paragraf + Cümlede Anlam [30S] + Felsefe Okumaları</div></div>
+        <div class="day-item"><div class="day-title">20.11 Cuma</div><div class="day-sub">• Matematik: Basit Eşitsizlikler</div><div class="day-sub">• Fen (Fizik): Fizik Bilimine Giriş / Madde</div><div class="day-target">🎯 30 Paragraf + Eşitsizlikler [25S] + Fizik Giriş [15S]</div></div>
+        <div class="day-item"><div class="day-title">21.11 Cumartesi</div><div class="day-sub">• Matematik: Mutlak Değer Kavramı</div><div class="day-sub">• Coğrafya: İklim Bilgisi (Sıcaklık - Basınç)</div><div class="day-target">🎯 30 Paragraf + Mutlak Değer [30S] + Coğrafya İklim</div></div>
+        <div class="day-item"><div class="day-title">22.11 Pazar</div><div class="day-sub">• Matematik & Sosyal Karma Soru Çözüm Günü</div><div class="day-target">🎯 30 Paragraf + Rasyonel, Eşitsizlik, Mutlak Değer [50 Karma Soru]</div></div>
+      </div>
+
+      <!-- Hafta 4 -->
+      <div id="w-content-4" class="hidden">
+        <div class="day-item"><div class="day-title">23.11 Pazartesi</div><div class="day-sub">• Matematik: Üslü İfadeler | Geometri: Üçgende Açılar</div><div class="day-target">🎯 30 Paragraf + Üslü İfadeler [30S] + Üçgende Açı</div></div>
+        <div class="day-item"><div class="day-title">24.11 Salı <span class="badge-ders">Dershane</span></div><div class="day-sub">• Türkçe: Ses Bilgisi | Tarih: Türk-İslam Devletleri</div><div class="day-target">🎯 30 Paragraf + Ses Bilgisi [25S] + Türk-İslam [Konu]</div></div>
+        <div class="day-item"><div class="day-title">25.11 Çarşamba</div><div class="day-sub">• Matematik: Köklü İfadeler | Fen: Kimya Bilimi / Atom</div><div class="day-target">🎯 30 Paragraf + Köklü İfadeler [30S] + Kimya Atom [15S]</div></div>
+        <div class="day-item"><div class="day-title">26.11 Perşembe <span class="badge-ders">Dershane</span></div><div class="day-sub">• Türkçe: Sözcükte Yapı | Din: Hz. Muhammed ve Gençlik</div><div class="day-target">🎯 30 Paragraf + Sözcükte Yapı [30S] + Din [20S]</div></div>
+        <div class="day-item"><div class="day-title">27.11 Cuma</div><div class="day-sub">• Matematik: Çarpanlara Ayırma | Fen: Hücre</div><div class="day-target">🎯 30 Paragraf + Çarpanlara Ayırma [30S] + Biyoloji Hücre</div></div>
+        <div class="day-item"><div class="day-title">28.11 Cumartesi</div><div class="day-sub">• Matematik: Oran - Orantı | Geometri: Özel Üçgenler</div><div class="day-target">🎯 30 Paragraf + Oran-Orantı [35S] + Dik Üçgen [20S]</div></div>
+        <div class="day-item"><div class="day-title">29.11 Pazar</div><div class="day-sub">• Aylık Genel Değerlendirme & Deneme Sınavı</div><div class="day-target">🎯 1 Adet Tam TYT Genel Denemesi [Sınav + Analiz]</div></div>
+      </div>
+
+    </div>
+
+    <!-- 3. SEKME: NET HESAPLAMA -->
+    <div id="view-net" class="hidden">
+      <div class="net-hero">
+        <span style="font-size:11px; text-transform:uppercase;">Toplam TYT Neti</span>
+        <h2 id="totNet">55.25</h2>
+        <span id="remText" style="font-size:12px; background:rgba(255,255,255,0.2); padding:3px 10px; border-radius:12px;">Hedefe Ulaşıldı 🎉</span>
+      </div>
+
+      <div class="card">
+        <div class="row-subject">
+          <span>Türkçe (40S)</span>
+          <div>
+            D: <input type="number" id="t-d" value="28" oninput="calcNet()"> 
+            Y: <input type="number" id="t-y" value="4" oninput="calcNet()">
+            <b id="t-n" style="color:#db2777; margin-left:6px;">27.00</b>
+          </div>
+        </div>
+
+        <div class="row-subject">
+          <span>Matematik (40S)</span>
+          <div>
+            D: <input type="number" id="m-d" value="9" oninput="calcNet()"> 
+            Y: <input type="number" id="m-y" value="2" oninput="calcNet()">
+            <b id="m-n" style="color:#db2777; margin-left:6px;">8.50</b>
+          </div>
+        </div>
+
+        <div class="row-subject">
+          <span>Sosyal (20S)</span>
+          <div>
+            D: <input type="number" id="s-d" value="15" oninput="calcNet()"> 
+            Y: <input type="number" id="s-y" value="3" oninput="calcNet()">
+            <b id="s-n" style="color:#db2777; margin-left:6px;">14.25</b>
+          </div>
+        </div>
+
+        <div class="row-subject" style="border:none;">
+          <span>Fen (20S)</span>
+          <div>
+            D: <input type="number" id="f-d" value="6" oninput="calcNet()"> 
+            Y: <input type="number" id="f-y" value="2" oninput="calcNet()">
+            <b id="f-n" style="color:#db2777; margin-left:6px;">5.50</b>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- ASLA KAYBOLMAYAN ÜST MENÜ SEKMELERİ -->
-    <div class="max-w-md mx-auto px-3 pb-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
-      <button onclick="switchTab('scan')" id="tab-btn-scan" class="flex-1 min-w-[85px] py-2 px-2.5 rounded-2xl font-bold text-xs bg-pink-500 text-white shadow-sm flex items-center justify-center gap-1.5 transition">
-        <i class="fa-solid fa-camera"></i>
-        <span>Soru Çöz</span>
-      </button>
-      <button onclick="switchTab('plan')" id="tab-btn-plan" class="flex-1 min-w-[85px] py-2 px-2.5 rounded-2xl font-bold text-xs bg-white text-slate-600 border border-pink-200 flex items-center justify-center gap-1.5 transition">
-        <i class="fa-solid fa-calendar
+    <!-- 4. SEKME: ODAK SAYACI -->
+    <div id="view-timer" class="hidden">
+      <div class="card" style="text-align:center;">
+        <span style="font-size:11px; font-weight:700; color:#db2777;">🌸 Melek'in Odak Süresi</span>
+        <div class="timer-circle">
+          <div id="tDisplay" class="timer-time">35:00</div>
+          <span id="tStatus" style="font-size:11px; color:#ec4899; font-weight:600;">Hazır mısın?</span>
+        </div>
+        <div class="timer-btns">
+          <button onclick="startT()" id="tBtn" class="btn-act" style="background:#ec4899; color:#fff;">Başlat</button>
+          <button onclick="resetT()" class="btn-act" style="background:#fce7f3; color:#be185d;">Sıfırla</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Tab Yönetimi
+    function tab(name) {
+      ['scan', 'plan', 'net', 'timer'].forEach(n => {
+        document.getElementById('view-' + n).classList.add('hidden');
+        document.getElementById('tab-' + n + '-btn').classList.remove('active');
+      });
+      document.getElementById('view-' + name).classList.remove('hidden');
+      document.getElementById('tab-' + name + '-btn').classList.add('active');
+    }
+
+    // Hafta Yönetimi
+    function showW(num) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('w-content-' + i).classList.add('hidden');
+        document.getElementById('wb-' + i).classList.remove('active');
+      }
+      document.getElementById('w-content-' + num).classList.remove('hidden');
+      document.getElementById('wb-' + num).classList.add('active');
+    }
+
+    // API Key
+    function saveKey() {
+      const k = document.getElementById('apiKeyInp').value.trim();
+      if (k) {
+        localStorage.setItem('melek_key', k);
+        alert('API Anahtarı kaydedildi! 🌸');
+      } else {
+        localStorage.removeItem('melek_key');
+      }
+      checkK();
+    }
+
+    function checkK() {
+      const k = localStorage.getItem('melek_key');
+      const l = document.getElementById('keyLabel');
+      const inp = document.getElementById('apiKeyInp');
+      if (k) {
+        l.innerText = 'Kayıtlı ✅';
+        l.style.color = '#059669';
+        inp.value = k;
+      } else {
+        l.innerText = 'Girilmedi ❌';
+        l.style.color = '#dc2626';
+      }
+    }
+
+    // Görsel
+    let b64 = null, mime = 'image/jpeg';
+    function readImg(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      mime = f.type || 'image/jpeg';
+      const r = new FileReader();
+      r.onload = ev => {
+        b64 = ev.target.result.split(',')[1];
+        document.getElementById('imgPrev').src = ev.target.result;
+        document.getElementById('previewBox').classList.remove('hidden');
+      };
+      r.readAsDataURL(f);
+    }
+
+    // Soru Çözücü
+    async function solve() {
+      const k = localStorage.getItem('melek_key') || document.getElementById('apiKeyInp').value.trim();
+      if (!k) {
+        alert('Lütfen yukarıdaki kutuya API anahtarını girip Kaydet butonuna bas.');
+        return;
+      }
+      const qText = document.getElementById('textInp').value.trim();
+      if (!b64 && !qText) {
+        alert('Lütfen sorunun fotoğrafını çek veya soruyu yaz.');
+        return;
+      }
+
+      const box = document.getElementById('solBox');
+      const load = document.getElementById('solLoading');
+      const cnt = document.getElementById('solContent');
+
+      box.classList.remove('hidden');
+      load.classList.remove('hidden');
+      cnt.innerHTML = '';
+
+      const prompt = `Sen Melek'in üniversite hazırlık asistanısın. Hedefi: Tarsus Üniversitesi Çocuk Gelişimi.
+Bu TYT sorusunu detaylıca çöz:
+1. Önce doğrudan doğru cevabı ve şıkkı söyle (Örn: "Doğru Cevap: B").
+2. Adım adım, samimi, motive edici ve anlaşılır bir dille çözümünü açıkla.
+3. Çeldirici şıkların neden elendiğini belirt.`;
+
+      const parts = [];
+      if (b64) parts.push({ inlineData: { mimeType: mime, data: b64 } });
+      parts.push({ text: prompt + (qText ? `\n\nEk Soru: ${qText}` : '') });
+
+      // Güncel modeller
+      const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+      let ok = false;
+      let errText = '';
+
+      for (const m of models) {
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${k}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: parts }] })
+          });
+          const d = await res.json();
+          if (res.ok && d.candidates && d.candidates[0]) {
+            load.classList.add('hidden');
+            let txt = d.candidates[0].content.parts[0].text
+              .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+              .replace(/\n\n/g, '<br><br>')
+              .replace(/\n/g, '<br>');
+            cnt.innerHTML = txt;
+            ok = true;
+            break;
+          } else if (d.error) {
+            errText = d.error.message;
+          }
+        } catch (e) { errText = e.message; }
+      }
+
+      if (!ok) {
+        load.classList.add('hidden');
+        cnt.innerHTML = `<span style="color:#dc2626;"><b>Hata:</b> ${errText || 'Bağlantı kurulamadı.'}</span>`;
+      }
+    }
+
+    // Net Hesabı
+    function calcNet() {
+      const v = id => Math.max(0, parseFloat(document.getElementById(id).value) || 0);
+      const c = (d, y) => Math.max(0, d - (y / 4));
+
+      const tn = c(v('t-d'), v('t-y'));
+      const mn = c(v('m-d'), v('m-y'));
+      const sn = c(v('s-d'), v('s-y'));
+      const fn = c(v('f-d'), v('f-y'));
+
+      document.getElementById('t-n').innerText = tn.toFixed(2);
+      document.getElementById('m-n').innerText = mn.toFixed(2);
+      document.getElementById('s-n').innerText = sn.toFixed(2);
+      document.getElementById('f-n').innerText = fn.toFixed(2);
+
+      const tot = tn + mn + sn + fn;
+      document.getElementById('totNet').innerText = tot.toFixed(2);
+
+      const rem = 55.0 - tot;
+      const remBox = document.getElementById('remText');
+      if (rem <= 0) {
+        remBox.innerText = 'Hedefe Ulaşıldı 🎉';
+      } else {
+        remBox.innerText = `Hedefe ${rem.toFixed(2)} Net Kaldı`;
+      }
+    }
+
+    // Sayaç
+    let sec = 35 * 60, timerId = null;
+    function startT() {
+      const b = document.getElementById('tBtn');
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+        b.innerText = 'Başlat';
+        document.getElementById('tStatus').innerText = 'Duraklatıldı';
+      } else {
+        timerId = setInterval(() => {
+          if (sec > 0) {
+            sec--;
+            let m = Math.floor(sec / 60), s = sec % 60;
+            document.getElementById('tDisplay').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+          } else {
+            clearInterval(timerId);
+            timerId = null;
+            alert('Süre bitti Melek! 🌸');
+          }
+        }, 1000);
+        b.innerText = 'Durdur';
+        document.getElementById('tStatus').innerText = 'Odaklanılıyor ✍️';
+      }
+    }
+
+    function resetT() {
+      clearInterval(timerId);
+      timerId = null;
+      sec = 35 * 60;
+      document.getElementById('tDisplay').innerText = '35:00';
+      document.getElementById('tBtn').innerText = 'Başlat';
+      document.getElementById('tStatus').innerText = 'Hazır mısın?';
+    }
+
+    window.onload = () => {
+      checkK();
+      calcNet();
+    };
+  </script>
+</body>
+</html>
